@@ -34,39 +34,24 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         spotLight.castsShadow = true
         return spotLight
     }()
-    
-    var timer: Timer!
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
 //        sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
         sceneView.delegate = self
-        sceneView.showsStatistics = true
+//        sceneView.showsStatistics = true
         sceneView.autoenablesDefaultLighting = false
         sceneView.automaticallyUpdatesLighting = false
         
         let scene = SCNScene(named: "art.scnassets/light_test.scn")!
         sceneView.scene = scene
         sceneView.session.delegate = self
-        
-//        spotLightNode.position = SCNVector3(0, 0, -1)
+
 //        spotLightNode.eulerAngles = SCNVector3(-90, 0, 0)
+        spotLightNode.position = SCNVector3(0, 0, -0.1)
 //        sceneView.scene.rootNode.addChildNode(spotLightNode)
 
-        timer = Timer(timeInterval: 0.2, repeats: true) { [unowned self] _ in
-            if let transform = self.sceneView.session.currentFrame?.camera.transform {
-                let cameraPosition = SCNVector3(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z)
-                self.spotLightNode.position = SCNVector3(0, 0, cameraPosition.z)
-//                self.spotLightNode.worldPosition = SCNVector3(0, 0, cameraPosition.z)
-                
-//                print("camera position: \(SCNVector3(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z))")
-            }
-        }
-//        RunLoop.current.add(timer, forMode: .commonModes)
-        
-        
-        
         sceneView.pointOfView?.addChildNode(spotLightNode)
 //        sceneView.pointOfView?.light = spotLight
     }
@@ -80,8 +65,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        // Pause the view's session
         sceneView.session.pause()
     }
     
@@ -92,11 +75,19 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
 extension ViewController: ARSessionDelegate {
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-//        let transform = frame.camera.transform
-//        let cameraPosition = SCNVector3(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z)
-//        spotLightNode.position = SCNVector3(0, 0, cameraPosition.z)
-        
-        print(spotLightNode.position)
-        print(spotLightNode.worldPosition)
+        let transform = frame.camera.transform
+        let eulerAngles = frame.camera.eulerAngles
+        let cameraPosition = SCNVector3(transform.columns.3.x, transform.columns.3.y, transform.columns.3.z)
+
+//        spotLightNode.position = SCNVector3(spotLightNode.position.x, cameraPosition.y, cameraPosition.z)
+//        spotLightNode.eulerAngles = SCNVector3(eulerAngles.x.toDegrees, eulerAngles.y.toDegrees, eulerAngles.z.toDegrees)
+
+//        print(SCNVector3(eulerAngles.x.toDegrees, eulerAngles.y.toDegrees, eulerAngles.z.toDegrees))
+
+
+//        print(spotLightNode.worldPosition)
+//        print(spotLightNode.simdPosition)
+
+//        print(spotLightNode.eulerAngles)
     }
 }
