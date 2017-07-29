@@ -14,6 +14,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
     
+    var lastForce: CGFloat = 0 {
+        didSet {
+            print("👆Last force: \(lastForce)")
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,14 +37,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tap))
         sceneView.addGestureRecognizer(tapGestureRecognizer)
-    }
-    
-    @objc func tap(recognizer: UITapGestureRecognizer) {
-        let touchPoint = recognizer.location(in: sceneView)
-        if let result = sceneView.hitTest(touchPoint, options: [:]).first {
-            let force = SCNVector3Make(result.worldCoordinates.x * Float(0.10), 0.10, 0)
-            result.node.physicsBody?.applyForce(force, asImpulse: true)
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -87,5 +85,38 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     func sessionInterruptionEnded(_ session: ARSession) {
         // Reset tracking and/or remove existing anchors if consistent tracking is required
         
+    }
+    
+    // MARK: - Actions
+    
+    @objc func tap(recognizer: UITapGestureRecognizer) {
+        let touchPoint = recognizer.location(in: sceneView)
+        if let result = sceneView.hitTest(touchPoint, options: [:]).first {
+            let force = SCNVector3Make(result.worldCoordinates.x * Float(0.10), 0.10, 0)
+            result.node.physicsBody?.applyForce(force, asImpulse: true)
+        }
+    }
+    
+    // MARK: - Touches
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let firstTouch = touches.first else {
+            return
+        }
+        lastForce = firstTouch.force
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let firstTouch = touches.first else {
+            return
+        }
+        lastForce = firstTouch.force
+    }
+    
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        guard let firstTouch = touches.first else {
+            return
+        }
+        lastForce = firstTouch.force
     }
 }
