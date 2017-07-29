@@ -16,7 +16,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     
     var lastForce: CGFloat = 0 {
         didSet {
-            print("👆Last force: \(lastForce)")
+//            print("👆Last force: \(lastForce)")
         }
     }
     
@@ -91,11 +91,24 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // MARK: - Actions
     
     @objc func tap(recognizer: UITapGestureRecognizer) {
+        guard let frame = sceneView.session.currentFrame else {
+            return
+        }
+        let cameraPosition = SCNVector3Make(frame.camera.transform.columns.3.x,
+                                            frame.camera.transform.columns.3.y,
+                                            frame.camera.transform.columns.3.z)
         let touchPoint = recognizer.location(in: sceneView)
         if let result = sceneView.hitTest(touchPoint, options: [:]).first {
-            let force = SCNVector3Make(result.worldCoordinates.x * Float(0.10), 0.10, 0)
+            let ratPosition = result.node.worldPosition
+            let force = flatForceVector(for: ratPosition, second: cameraPosition)
             result.node.physicsBody?.applyForce(force, asImpulse: true)
         }
+    }
+    
+    func flatForceVector(for first: SCNVector3, second: SCNVector3, forceVolume: Float = 0.15) -> SCNVector3 {
+        let xForce = ((abs(first.x) - abs(second.x))) > 0 ? -forceVolume : forceVolume
+        let zForce = ((abs(first.z) - abs(second.z))) > 0 ? -forceVolume : forceVolume
+        return SCNVector3Make(xForce, 0, zForce)
     }
     
     // MARK: - Touches
@@ -125,6 +138,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 extension ViewController: ARSessionDelegate {
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        print("Camera tramsform \(frame.camera.transform)")
+//        frame.camera.transform
     }
 }
