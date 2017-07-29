@@ -67,7 +67,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         
         
-//        sceneView.pointOfView?.addChildNode(spotLightNode)
+        sceneView.pointOfView?.addChildNode(spotLightNode)
 //        sceneView.pointOfView?.light = spotLight
     }
     
