@@ -11,12 +11,12 @@ import SceneKit
 import ARKit
 
 class ViewController: UIViewController, ARSCNViewDelegate {
-
+    
     @IBOutlet var sceneView: ARSCNView!
     
     var lastForce: CGFloat = 0 {
         didSet {
-//            print("👆Last force: \(lastForce)")
+            //            print("👆Last force: \(lastForce)")
         }
     }
     
@@ -33,10 +33,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         
         // Create a new scene
-        let scene = SCNScene(named: "art.scnassets/Maze.scn")!
-        
-        // Set the scene to the view
-        sceneView.scene = scene
+        //        let scene = SCNScene(named: "art.scnassets/Maze.scn")!
+        //
+        //        // Set the scene to the view
+        //        sceneView.scene = scene
         
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tap))
         sceneView.addGestureRecognizer(tapGestureRecognizer)
@@ -61,21 +61,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.session.pause()
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Release any cached data, images, etc that aren't in use.
-    }
-
     // MARK: - ARSCNViewDelegate
-    
-/*
-    // Override to create and configure nodes for anchors added to the view's session.
-    func renderer(_ renderer: SCNSceneRenderer, nodeFor anchor: ARAnchor) -> SCNNode? {
-        let node = SCNNode()
-     
-        return node
-    }
-*/
     
     func session(_ session: ARSession, didFailWithError error: Error) {
         // Present an error message to the user
@@ -114,18 +100,32 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // MARK: - Actions
     
     @objc func tap(recognizer: UITapGestureRecognizer) {
-        guard let frame = sceneView.session.currentFrame else {
-            return
-        }
-        let cameraPosition = SCNVector3Make(frame.camera.transform.columns.3.x,
-                                            frame.camera.transform.columns.3.y,
-                                            frame.camera.transform.columns.3.z)
+        //        guard let frame = sceneView.session.currentFrame else {
+        //            return
+        //        }
+        //        let cameraPosition = SCNVector3Make(frame.camera.transform.columns.3.x,
+        //                                            frame.camera.transform.columns.3.y,
+        //                                            frame.camera.transform.columns.3.z)
+        //        let touchPoint = recognizer.location(in: sceneView)
+        //        if let result = sceneView.hitTest(touchPoint, options: [:]).first {
+        //            let ratPosition = result.node.worldPosition
+        //            let force = flatForceVector(for: ratPosition, second: cameraPosition)
+        //            result.node.physicsBody?.applyForce(force, asImpulse: true)
+        //        }
+        
         let touchPoint = recognizer.location(in: sceneView)
-        if let result = sceneView.hitTest(touchPoint, options: [:]).first {
-            let ratPosition = result.node.worldPosition
-            let force = flatForceVector(for: ratPosition, second: cameraPosition)
-            result.node.physicsBody?.applyForce(force, asImpulse: true)
+        if let result = sceneView.hitTest(touchPoint, types: .existingPlaneUsingExtent).first {
+            addMaze(with: result)
         }
+    }
+    
+    func addMaze(with result: ARHitTestResult) {
+        let mazeScene = SCNScene(named: "art.scnassets/Maze.scn")!
+        let rootNode = mazeScene.rootNode.clone()
+        rootNode.position = SCNVector3Make(result.worldTransform.columns.3.x,
+                                                     result.worldTransform.columns.3.y,
+                                                     result.worldTransform.columns.3.z)
+        sceneView.scene.rootNode.addChildNode(rootNode)
     }
     
     func flatForceVector(for first: SCNVector3, second: SCNVector3, forceVolume: Float = 0.15) -> SCNVector3 {
@@ -161,6 +161,6 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 extension ViewController: ARSessionDelegate {
     
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
-//        frame.camera.transform
+        //        frame.camera.transform
     }
 }
