@@ -28,6 +28,17 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Set the scene to the view
         sceneView.scene = scene
+        
+        let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tap))
+        sceneView.addGestureRecognizer(tapGestureRecognizer)
+    }
+    
+    @objc func tap(recognizer: UITapGestureRecognizer) {
+        let touchPoint = recognizer.location(in: sceneView)
+        if let result = sceneView.hitTest(touchPoint, options: [:]).first {
+            let force = SCNVector3Make(result.worldCoordinates.x * Float(0.10), 0.10, 0)
+            result.node.physicsBody?.applyForce(force, asImpulse: true)
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
