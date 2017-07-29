@@ -47,6 +47,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         
         // Run the view's session
         sceneView.session.run(configuration)
+        sceneView.session.delegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -118,5 +119,12 @@ class ViewController: UIViewController, ARSCNViewDelegate {
             return
         }
         lastForce = firstTouch.force
+    }
+}
+
+extension ViewController: ARSessionDelegate {
+    
+    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        print("Camera tramsform \(frame.camera.transform)")
     }
 }
