@@ -68,6 +68,16 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.session.pause()
     }
     
+    @IBAction func sliderChanged(_ sender: UISlider) {
+        let box1Node = sceneView.scene.rootNode.childNode(withName: "box1", recursively: true)
+        let box2Node = sceneView.scene.rootNode.childNode(withName: "box2", recursively: true)
+        let box3Node = sceneView.scene.rootNode.childNode(withName: "box3", recursively: true)
+
+        box1Node?.scale = SCNVector3(sender.value*10, sender.value*10, sender.value*10)
+        box2Node?.scale = SCNVector3(sender.value*10, sender.value*10, sender.value*10)
+        box3Node?.scale = SCNVector3(sender.value*10, sender.value*10, sender.value*10)
+    }
+
     // MARK: - Configurations
 }
 
