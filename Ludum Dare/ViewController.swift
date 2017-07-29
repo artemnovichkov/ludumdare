@@ -21,6 +21,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     var planes = [Plane]()
+    var mazeNode: SCNNode?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,32 +101,45 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     // MARK: - Actions
     
     @objc func tap(recognizer: UITapGestureRecognizer) {
-        //        guard let frame = sceneView.session.currentFrame else {
-        //            return
-        //        }
-        //        let cameraPosition = SCNVector3Make(frame.camera.transform.columns.3.x,
-        //                                            frame.camera.transform.columns.3.y,
-        //                                            frame.camera.transform.columns.3.z)
-        //        let touchPoint = recognizer.location(in: sceneView)
-        //        if let result = sceneView.hitTest(touchPoint, options: [:]).first {
-        //            let ratPosition = result.node.worldPosition
-        //            let force = flatForceVector(for: ratPosition, second: cameraPosition)
-        //            result.node.physicsBody?.applyForce(force, asImpulse: true)
-        //        }
-        
+        if mazeNode == nil {
+            let touchPoint = recognizer.location(in: sceneView)
+            if let result = sceneView.hitTest(touchPoint, types: .existingPlaneUsingExtent).first {
+                addMaze(with: result)
+            }
+            return
+        }
+        guard let frame = sceneView.session.currentFrame else {
+            return
+        }
+        let cameraPosition = SCNVector3Make(frame.camera.transform.columns.3.x,
+                                            frame.camera.transform.columns.3.y,
+                                            frame.camera.transform.columns.3.z)
         let touchPoint = recognizer.location(in: sceneView)
-        if let result = sceneView.hitTest(touchPoint, types: .existingPlaneUsingExtent).first {
-            addMaze(with: result)
+        if let result = sceneView.hitTest(touchPoint, options: [:]).first {
+            let ratPosition = result.node.worldPosition
+            let force = flatForceVector(for: ratPosition, second: cameraPosition)
+            result.node.physicsBody?.applyForce(force, asImpulse: true)
         }
     }
     
     func addMaze(with result: ARHitTestResult) {
+        guard let planeAnchor = result.anchor as? ARPlaneAnchor else {
+            print("Not plane anchor")
+            return
+        }
+        let plane = planes.filter { $0.anchor.identifier == planeAnchor.identifier }.first
+        guard let unwrappedPlane = plane else {
+            print("Not saved plane")
+            return
+        }
+        unwrappedPlane.planeNode?.isHidden = true
         let mazeScene = SCNScene(named: "art.scnassets/Maze.scn")!
-        let rootNode = mazeScene.rootNode.clone()
-        rootNode.position = SCNVector3Make(result.worldTransform.columns.3.x,
+        let mazeNode = mazeScene.rootNode.clone()
+        mazeNode.position = SCNVector3Make(result.worldTransform.columns.3.x,
                                                      result.worldTransform.columns.3.y,
                                                      result.worldTransform.columns.3.z)
-        sceneView.scene.rootNode.addChildNode(rootNode)
+        sceneView.scene.rootNode.addChildNode(mazeNode)
+        self.mazeNode = mazeNode
     }
     
     func flatForceVector(for first: SCNVector3, second: SCNVector3, forceVolume: Float = 0.15) -> SCNVector3 {

@@ -13,6 +13,7 @@ final class Plane: SCNNode {
     
     let anchor: ARPlaneAnchor
     var plane: SCNPlane?
+    var planeNode: SCNNode?
     
     init(anchor: ARPlaneAnchor) {
         self.anchor = anchor
@@ -43,5 +44,6 @@ final class Plane: SCNNode {
         planeNode.transform = SCNMatrix4MakeRotation(Float(-Double.pi / 2), 1, 0, 0)
         
         addChildNode(planeNode)
+        self.planeNode = planeNode
     }
 }
