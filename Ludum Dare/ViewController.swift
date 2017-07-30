@@ -105,6 +105,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     // MARK: - Methods
     
     private func startGame() {
+        sceneView.debugOptions = []
         let timer = Timer(timeInterval: 0.5, repeats: true) { [unowned self] _ in
             self.currentEnergy -= self.lastForce
         }
@@ -246,6 +247,10 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
             }
             if sender.tag == 2 {
                 ratNode.position.x += 0.2
+            }
+            
+            if ratNode.position.z > 40 {
+                self.positionTimer?.invalidate()
             }
         }
         RunLoop.current.add(timer, forMode: .commonModes)
