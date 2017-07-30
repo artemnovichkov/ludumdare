@@ -73,31 +73,15 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         super.viewDidLoad()
 
         sceneView.delegate = self
-        
-        // Show statistics such as fps and timing information
-        sceneView.showsStatistics = true
-        sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints, ARSCNDebugOptions.showWorldOrigin]
-        
-        // Create a new scene
-        //        let scene = SCNScene(named: "art.scnassets/Maze.scn")!
-        //
-        //        // Set the scene to the view
-        //        sceneView.scene = scene
-        
+        sceneView.autoenablesDefaultLighting = false
+        sceneView.automaticallyUpdatesLighting = false
+        sceneView.pointOfView?.light = spotLight
+        sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
+
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tap))
         sceneView.addGestureRecognizer(tapGestureRecognizer)
         
         progressView.isHidden = true
-    }
-    
-    @objc func pinch(recognizer: UIPinchGestureRecognizer) {
-        guard let mazeNode = mazeNode else {
-            return
-        }
-        let scale = Float(recognizer.scale)
-        mazeNode.scale = SCNVector3Make(mazeNode.scale.x * scale,
-                                        mazeNode.scale.y * scale,
-                                        mazeNode.scale.z * scale)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -170,6 +154,16 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         }
     }
     
+    @objc func pinch(recognizer: UIPinchGestureRecognizer) {
+        guard let mazeNode = mazeNode else {
+            return
+        }
+        let scale = Float(recognizer.scale)
+        mazeNode.scale = SCNVector3Make(mazeNode.scale.x * scale,
+                                        mazeNode.scale.y * scale,
+                                        mazeNode.scale.z * scale)
+    }
+    
     func addMaze(with result: ARHitTestResult) {
         guard let planeAnchor = result.anchor as? ARPlaneAnchor else {
             print("Not plane anchor")
@@ -189,8 +183,11 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
                                                      result.worldTransform.columns.3.z)
         sceneView.scene.rootNode.addChildNode(mazeNode)
         self.mazeNode = mazeNode
+        
         let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinch))
         sceneView.addGestureRecognizer(pinchGestureRecognizer)
+        
+        startGame()
     }
     
     func flatForceVector(for first: SCNVector3, second: SCNVector3, forceVolume: Float = 0.15) -> SCNVector3 {
