@@ -27,10 +27,15 @@
                                     <segue destination="BV1-FR-VrT" kind="presentation" modalPresentationStyle="fullScreen" modalTransitionStyle="crossDissolve" id="BJm-2d-Jyo"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rat" translatesAutoresizingMaskIntoConstraints="NO" id="DRr-k7-Ezi">
+                                <rect key="frame" x="130" y="383" width="245" height="284"/>
+                            </imageView>
                         </subviews>
-                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" red="0.039215686274509803" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="N2E-Zt-Jz1" firstAttribute="centerY" secondItem="EbD-SI-fPb" secondAttribute="centerY" id="Kyx-xT-7Xq"/>
+                            <constraint firstItem="8im-vK-NtD" firstAttribute="bottom" secondItem="DRr-k7-Ezi" secondAttribute="bottom" id="YVW-2w-MTn"/>
+                            <constraint firstItem="DRr-k7-Ezi" firstAttribute="trailing" secondItem="8im-vK-NtD" secondAttribute="trailing" id="dhL-n3-pb1"/>
                             <constraint firstItem="N2E-Zt-Jz1" firstAttribute="centerX" secondItem="EbD-SI-fPb" secondAttribute="centerX" id="mUW-5H-CDK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="8im-vK-NtD"/>
@@ -38,7 +43,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Vz5-tc-biH" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-754" y="37"/>
+            <point key="canvasLocation" x="-754.39999999999998" y="36.431784107946029"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="tXr-a1-R10">
@@ -164,5 +169,6 @@
         <image name="paw-left" width="295" height="295"/>
         <image name="paw-right" width="295" height="295"/>
         <image name="paw-up" width="50" height="50"/>
+        <image name="rat" width="245" height="284"/>
     </resources>
 </document>
