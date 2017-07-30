@@ -79,6 +79,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
 //        sceneView.automaticallyUpdatesLighting = false
 //        sceneView.pointOfView?.light = spotLight
         sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
+        sceneView.scene.physicsWorld.contactDelegate = self
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tap))
         sceneView.addGestureRecognizer(tapGestureRecognizer)
@@ -117,6 +118,9 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
         guard let planeAnchor = anchor as? ARPlaneAnchor else {
+            return
+        }
+        guard currentState == .surfaceFinding else {
             return
         }
         let plane = Plane(anchor: planeAnchor)
@@ -287,5 +291,12 @@ extension ViewController {
     
     override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
         lastForce = 0
+    }
+}
+
+extension ViewController: SCNPhysicsContactDelegate {
+    
+    public func physicsWorld(_ world: SCNPhysicsWorld, didBegin contact: SCNPhysicsContact) {
+        print("didBegin")
     }
 }
