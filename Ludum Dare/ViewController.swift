@@ -176,7 +176,6 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
                                             frame.camera.transform.columns.3.z)
         let ratPosition = ratNode.worldPosition
         let force = flatForceVector(for: ratPosition, second: cameraPosition)
-//        let force = SCNVector3Make(0.5, 0.5, 0.5)
         ratNode.physicsBody?.applyForce(force, asImpulse: true)
     }
     
@@ -195,8 +194,8 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         let mazeNode = mazeScene.rootNode.clone()
         mazeNode.scale = SCNVector3Make(0.05, 0.05, 0.05)
         mazeNode.position = SCNVector3Make(result.worldTransform.columns.3.x,
-                                                     result.worldTransform.columns.3.y,
-                                                     result.worldTransform.columns.3.z)
+                                           result.worldTransform.columns.3.y,
+                                           result.worldTransform.columns.3.z)
         sceneView.scene.rootNode.addChildNode(mazeNode)
         self.mazeNode = mazeNode
         
