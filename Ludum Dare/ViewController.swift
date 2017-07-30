@@ -214,6 +214,8 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         mazeNode.position = SCNVector3Make(result.worldTransform.columns.3.x,
                                            result.worldTransform.columns.3.y,
                                            result.worldTransform.columns.3.z)
+        let planeRotation = unwrappedPlane.planeNode!.rotation
+        mazeNode.rotation = SCNVector4Make(planeRotation.x, planeRotation.y, planeRotation.z, 0)
         sceneView.scene.rootNode.addChildNode(mazeNode)
         self.mazeNode = mazeNode
         
