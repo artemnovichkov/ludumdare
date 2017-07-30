@@ -20,34 +20,48 @@
                             <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ALo-rS-Ael">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                             </arscnView>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="9gg-Nv-9VU">
-                                <rect key="frame" x="14" y="621" width="118" height="31"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="m36-iR-vb7">
+                                <rect key="frame" x="325" y="30" width="40" height="30"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6CC-dN-axU">
+                                        <rect key="frame" x="0.0" y="0.0" width="40" height="30"/>
+                                        <color key="backgroundColor" red="0.20784313730000001" green="0.69803921570000005" blue="0.11741071428571428" alpha="1" colorSpace="calibratedRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="40" id="0CC-BZ-MNu"/>
+                                        </constraints>
+                                    </view>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="114" id="EMU-6A-6ZD"/>
-                                    <constraint firstAttribute="height" constant="30" id="Qqh-Hy-Fc7"/>
+                                    <constraint firstAttribute="height" constant="30" id="8c8-JW-iVL"/>
+                                    <constraint firstItem="6CC-dN-axU" firstAttribute="leading" secondItem="m36-iR-vb7" secondAttribute="leading" id="CZy-uU-N4r"/>
+                                    <constraint firstAttribute="width" constant="40" id="GLD-sb-DvH"/>
+                                    <constraint firstItem="6CC-dN-axU" firstAttribute="top" secondItem="m36-iR-vb7" secondAttribute="top" id="IG8-bH-4Is"/>
+                                    <constraint firstAttribute="bottom" secondItem="6CC-dN-axU" secondAttribute="bottom" id="WGk-Fo-hGd"/>
                                 </constraints>
-                                <connections>
-                                    <action selector="sliderChanged:" destination="BV1-FR-VrT" eventType="valueChanged" id="7Jm-gv-Zxi"/>
-                                </connections>
-                            </slider>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="Dbh-I0-6jv" firstAttribute="bottom" secondItem="ALo-rS-Ael" secondAttribute="bottom" id="BmU-N6-Gqd"/>
-                            <constraint firstItem="9gg-Nv-9VU" firstAttribute="leading" secondItem="Dbh-I0-6jv" secondAttribute="leading" constant="16" id="QrC-vh-idY"/>
-                            <constraint firstItem="Dbh-I0-6jv" firstAttribute="bottom" secondItem="9gg-Nv-9VU" secondAttribute="bottom" constant="16" id="YR8-Jx-CPY"/>
+                            <constraint firstItem="Dbh-I0-6jv" firstAttribute="trailing" secondItem="m36-iR-vb7" secondAttribute="trailing" constant="10" id="IrA-R0-6pm"/>
                             <constraint firstItem="ALo-rS-Ael" firstAttribute="top" secondItem="Dbh-I0-6jv" secondAttribute="top" id="guj-Da-KLu"/>
                             <constraint firstItem="Dbh-I0-6jv" firstAttribute="trailing" secondItem="ALo-rS-Ael" secondAttribute="trailing" id="lQS-gb-5Xm"/>
+                            <constraint firstItem="m36-iR-vb7" firstAttribute="top" secondItem="Dbh-I0-6jv" secondAttribute="top" constant="10" id="oTO-MO-4gE"/>
                             <constraint firstItem="ALo-rS-Ael" firstAttribute="leading" secondItem="Dbh-I0-6jv" secondAttribute="leading" id="qUz-5T-xfD"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Dbh-I0-6jv"/>
                     </view>
                     <connections>
+                        <outlet property="maxProgressConstraint" destination="8c8-JW-iVL" id="ium-r1-tMX"/>
+                        <outlet property="progressView" destination="6CC-dN-axU" id="hFM-OA-p8F"/>
                         <outlet property="sceneView" destination="ALo-rS-Ael" id="bee-Wd-mIi"/>
+                        <outlet property="widthProgressConstraint" destination="0CC-BZ-MNu" id="aiQ-h6-EIe"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="32.799999999999997" y="37.331334332833585"/>
         </scene>
     </scenes>
 </document>

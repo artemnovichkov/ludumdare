@@ -10,73 +10,105 @@ import UIKit
 import SceneKit
 import ARKit
 
-class ViewController: UIViewController, ARSCNViewDelegate {
+final class ViewController: UIViewController, ARSCNViewDelegate {
+    
+    enum State {
+        case playing
+        case gameOver
+        case surfaceFinding
+    }
+    
+    fileprivate enum Battery {
+        static let fullEnergy: CGFloat = 500
+    }
     
     @IBOutlet var sceneView: ARSCNView!
+    @IBOutlet var progressView: UIView!
+    
+    @IBOutlet weak var widthProgressConstraint: NSLayoutConstraint!
+    @IBOutlet weak var maxProgressConstraint: NSLayoutConstraint!
+    
+    fileprivate lazy var spotLight: SCNLight = {
+        let spotLight = SCNLight()
+        spotLight.type = .spot
+        spotLight.spotInnerAngle = 0
+        spotLight.spotOuterAngle = 45
+        spotLight.castsShadow = true
+        return spotLight
+    }()
+    
+    var currentState: State = .surfaceFinding
+    var currentEnergy = Battery.fullEnergy {
+        didSet {
+            if currentEnergy <= 0 {
+                currentState = .gameOver
+            }
+            else {
+                let progress = (currentEnergy * 100) / Battery.fullEnergy
+                widthProgressConstraint.constant = maxProgressConstraint.constant * progress/100
+                view.setNeedsUpdateConstraints()
+                view.updateConstraintsIfNeeded()
+            }
+        }
+    }
     
     var lastForce: CGFloat = 0 {
         didSet {
-            //            print("👆Last force: \(lastForce)")
+            if currentState == .playing {
+                spotLight.intensity = lastForce * 200
+            }
         }
     }
     
     var planes = [Plane]()
     var mazeNode: SCNNode?
+    var gameTimer: Timer?
+
+    deinit {
+        gameTimer?.invalidate()
+        gameTimer = nil
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Set the view's delegate
+
         sceneView.delegate = self
-        
-        // Show statistics such as fps and timing information
-        sceneView.showsStatistics = true
+        sceneView.autoenablesDefaultLighting = false
+        sceneView.automaticallyUpdatesLighting = false
+        sceneView.pointOfView?.light = spotLight
         sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
-        
-        // Create a new scene
-        //        let scene = SCNScene(named: "art.scnassets/Maze.scn")!
-        //
-        //        // Set the scene to the view
-        //        sceneView.scene = scene
-        
+
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tap))
         sceneView.addGestureRecognizer(tapGestureRecognizer)
+        
+        progressView.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        // Create a session configuration
         let configuration = ARWorldTrackingSessionConfiguration()
         configuration.planeDetection = .horizontal
         
-        // Run the view's session
         sceneView.session.run(configuration)
         sceneView.session.delegate = self
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        
-        // Pause the view's session
         sceneView.session.pause()
     }
+
+    // MARK: - Methods
     
-    // MARK: - ARSCNViewDelegate
-    
-    func session(_ session: ARSession, didFailWithError error: Error) {
-        // Present an error message to the user
-        
-    }
-    
-    func sessionWasInterrupted(_ session: ARSession) {
-        // Inform the user that the session has been interrupted, for example, by presenting an overlay
-        
-    }
-    
-    func sessionInterruptionEnded(_ session: ARSession) {
-        // Reset tracking and/or remove existing anchors if consistent tracking is required
-        
+    private func startGame() {
+        let timer = Timer(timeInterval: 0.5, repeats: true) { [unowned self] _ in
+            self.currentEnergy -= self.lastForce
+        }
+        RunLoop.current.add(timer, forMode: .commonModes)
+        gameTimer = timer
+        currentState = .playing
+        progressView.isHidden = false
     }
     
     // MARK: - Planes
@@ -140,6 +172,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                                                      result.worldTransform.columns.3.z)
         sceneView.scene.rootNode.addChildNode(mazeNode)
         self.mazeNode = mazeNode
+        
+        startGame()
     }
     
     func flatForceVector(for first: SCNVector3, second: SCNVector3, forceVolume: Float = 0.15) -> SCNVector3 {
@@ -147,8 +181,20 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         let zForce = ((abs(first.z) - abs(second.z))) > 0 ? -forceVolume : forceVolume
         return SCNVector3Make(xForce, 0, zForce)
     }
+}
+
+// MARK: - ARSessionDelegate
+
+extension ViewController: ARSessionDelegate {
     
-    // MARK: - Touches
+    func session(_ session: ARSession, didUpdate frame: ARFrame) {
+        
+    }
+}
+
+// MARK: - Touches
+
+extension ViewController {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         guard let firstTouch = touches.first else {
@@ -165,16 +211,10 @@ class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let firstTouch = touches.first else {
-            return
-        }
-        lastForce = firstTouch.force
+        lastForce = 0
     }
-}
-
-extension ViewController: ARSessionDelegate {
     
-    func session(_ session: ARSession, didUpdate frame: ARFrame) {
-        //        frame.camera.transform
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        lastForce = 0
     }
 }
