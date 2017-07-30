@@ -235,24 +235,24 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     @IBAction func touchDown(_ sender: UIButton) {
-        let timer = Timer(timeInterval: 0.1, repeats: true) { [unowned self] _ in
-            guard let ratNode = self.ratNode else {
-                return
-            }
-            if sender.tag == 0 {
-                ratNode.position.x -= 0.2
-            }
-            if sender.tag == 1 {
-                ratNode.position.z += 0.2
-            }
-            if sender.tag == 2 {
-                ratNode.position.x += 0.2
-            }
-            
-            if ratNode.position.z > 40 {
-                self.positionTimer?.invalidate()
-            }
+        guard let ratNode = self.ratNode else {
+            return
         }
+        
+        if sender.tag == 0 {
+            ratNode.position.x += 0.4
+        }
+        if sender.tag == 1 {
+            ratNode.position.z += 0.4
+        }
+        if sender.tag == 2 {
+            ratNode.position.x -= 0.4
+        }
+        
+        if ratNode.position.z > 40 {
+            self.positionTimer?.invalidate()
+        }
+        
         RunLoop.current.add(timer, forMode: .commonModes)
         positionTimer = timer
     }
