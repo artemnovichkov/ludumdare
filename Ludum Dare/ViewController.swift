@@ -63,6 +63,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     var planes = [Plane]()
     var mazeNode: SCNNode?
     var gameTimer: Timer?
+    var positionTimer: Timer?
 
     deinit {
         gameTimer?.invalidate()
@@ -165,18 +166,16 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     @IBAction func moveButtonAction(_ sender: Any) {
-        guard let frame = sceneView.session.currentFrame else {
-            return
-        }
         guard let ratNode = mazeNode?.childNode(withName: "rat", recursively: true) else {
             return
         }
-        let cameraPosition = SCNVector3Make(frame.camera.transform.columns.3.x,
-                                            frame.camera.transform.columns.3.y,
-                                            frame.camera.transform.columns.3.z)
-        let ratPosition = ratNode.worldPosition
-        let force = flatForceVector(for: ratPosition, second: cameraPosition)
-        ratNode.physicsBody?.applyForce(force, asImpulse: true)
+        let timer = Timer(timeInterval: 0.01, repeats: true) { _ in
+            ratNode.position = SCNVector3Make(ratNode.position.x,
+                                              ratNode.position.y,
+                                              ratNode.position.z + 0.05)
+        }
+        RunLoop.current.add(timer, forMode: .commonModes)
+        gameTimer = timer
     }
     
     func addMaze(with result: ARHitTestResult) {
