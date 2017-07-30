@@ -1,23 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" systemVersion="17A278a" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13168.3" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BV1-FR-VrT">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13147.4"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
-                <viewController id="BV1-FR-VrT" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
-                    <arscnView key="view" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="BrB-h1-WRS">
+                <viewController id="BV1-FR-VrT" customClass="ViewController" customModule="Ludum_Dare" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="nsE-5I-6dD">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    </arscnView>
+                        <subviews>
+                            <arscnView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ALo-rS-Ael">
+                                <rect key="frame" x="0.0" y="20" width="375" height="647"/>
+                            </arscnView>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="9gg-Nv-9VU">
+                                <rect key="frame" x="14" y="621" width="118" height="31"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="114" id="EMU-6A-6ZD"/>
+                                    <constraint firstAttribute="height" constant="30" id="Qqh-Hy-Fc7"/>
+                                </constraints>
+                                <connections>
+                                    <action selector="sliderChanged:" destination="BV1-FR-VrT" eventType="valueChanged" id="7Jm-gv-Zxi"/>
+                                </connections>
+                            </slider>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="Dbh-I0-6jv" firstAttribute="bottom" secondItem="ALo-rS-Ael" secondAttribute="bottom" id="BmU-N6-Gqd"/>
+                            <constraint firstItem="9gg-Nv-9VU" firstAttribute="leading" secondItem="Dbh-I0-6jv" secondAttribute="leading" constant="16" id="QrC-vh-idY"/>
+                            <constraint firstItem="Dbh-I0-6jv" firstAttribute="bottom" secondItem="9gg-Nv-9VU" secondAttribute="bottom" constant="16" id="YR8-Jx-CPY"/>
+                            <constraint firstItem="ALo-rS-Ael" firstAttribute="top" secondItem="Dbh-I0-6jv" secondAttribute="top" id="guj-Da-KLu"/>
+                            <constraint firstItem="Dbh-I0-6jv" firstAttribute="trailing" secondItem="ALo-rS-Ael" secondAttribute="trailing" id="lQS-gb-5Xm"/>
+                            <constraint firstItem="ALo-rS-Ael" firstAttribute="leading" secondItem="Dbh-I0-6jv" secondAttribute="leading" id="qUz-5T-xfD"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="Dbh-I0-6jv"/>
+                    </view>
                     <connections>
-                        <outlet property="sceneView" destination="BrB-h1-WRS" id="5nT-qQ-ynl"/>
+                        <outlet property="sceneView" destination="ALo-rS-Ael" id="bee-Wd-mIi"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
