@@ -165,19 +165,6 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
                                         mazeNode.scale.z * scale)
     }
     
-    @IBAction func moveButtonAction(_ sender: Any) {
-        guard let ratNode = mazeNode?.childNode(withName: "rat", recursively: true) else {
-            return
-        }
-        let timer = Timer(timeInterval: 0.01, repeats: true) { _ in
-            ratNode.position = SCNVector3Make(ratNode.position.x,
-                                              ratNode.position.y,
-                                              ratNode.position.z + 0.05)
-        }
-        RunLoop.current.add(timer, forMode: .commonModes)
-        gameTimer = timer
-    }
-    
     func addMaze(with result: ARHitTestResult) {
         guard let planeAnchor = result.anchor as? ARPlaneAnchor else {
             print("Not plane anchor")
@@ -208,6 +195,22 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         let xForce = ((abs(first.x) - abs(second.x))) > 0 ? -forceVolume : forceVolume
         let zForce = ((abs(first.z) - abs(second.z))) > 0 ? -forceVolume : forceVolume
         return SCNVector3Make(xForce, 0, zForce)
+    }
+    @IBAction func touchDown(_ sender: Any) {
+        guard let ratNode = mazeNode?.childNode(withName: "rat", recursively: true) else {
+            return
+        }
+        let timer = Timer(timeInterval: 0.01, repeats: true) { _ in
+            ratNode.position = SCNVector3Make(ratNode.position.x,
+                                              ratNode.position.y,
+                                              ratNode.position.z + 0.05)
+        }
+        RunLoop.current.add(timer, forMode: .commonModes)
+        positionTimer = timer
+    }
+    @IBAction func moveButtonAction(_ sender: Any) {
+        positionTimer?.invalidate()
+        positionTimer = nil
     }
 }
 
