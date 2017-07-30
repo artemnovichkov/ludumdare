@@ -80,9 +80,9 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         super.viewDidLoad()
 
         sceneView.delegate = self
-//        sceneView.autoenablesDefaultLighting = false
-//        sceneView.automaticallyUpdatesLighting = false
-//        sceneView.pointOfView?.light = spotLight
+        sceneView.autoenablesDefaultLighting = false
+        sceneView.automaticallyUpdatesLighting = false
+        sceneView.pointOfView?.light = spotLight
         sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         sceneView.scene.physicsWorld.contactDelegate = self
 
@@ -264,13 +264,13 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         if sender.tag == 2 {
             ratNode.position.x -= 0.4
         }
+        if sender.tag == 3 {
+            ratNode.position.z -= 0.4
+        }
         
         if ratNode.position.z > 40 {
             self.positionTimer?.invalidate()
         }
-        
-//        RunLoop.current.add(timer, forMode: .commonModes)
-//        positionTimer = timer
     }
     
     @IBAction func moveButtonAction(_ sender: Any) {
