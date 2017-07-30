@@ -16,6 +16,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         case playing
         case gameOver
         case surfaceFinding
+        case win
     }
     
     fileprivate enum Battery {
@@ -46,7 +47,22 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         return spotLight
     }()
     
-    var currentState: State = .surfaceFinding
+    var currentState: State = .surfaceFinding {
+        didSet {
+            switch currentState {
+            case .gameOver:
+                let alertController = UIAlertController(title: "ALERT", message: "GAME OVER", preferredStyle: .alert)
+                present(alertController, animated: true, completion: nil)
+            case .win:
+                let alertController = UIAlertController(title: "ALERT", message: "WIN!!!", preferredStyle: .alert)
+                present(alertController, animated: true, completion: nil)
+            default:
+                break
+            }
+        }
+    }
+    
+    
     var currentEnergy = Battery.fullEnergy {
         didSet {
             if currentEnergy <= 0 {
@@ -74,7 +90,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     var ratNode: SCNNode?
     var gameTimer: Timer?
     var positionTimer: Timer?
-
+    
     deinit {
         gameTimer?.invalidate()
         gameTimer = nil
@@ -82,14 +98,14 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         sceneView.delegate = self
         sceneView.autoenablesDefaultLighting = false
         sceneView.automaticallyUpdatesLighting = false
         sceneView.pointOfView?.light = spotLight
         sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
         sceneView.scene.physicsWorld.contactDelegate = self
-
+        
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tap))
         sceneView.addGestureRecognizer(tapGestureRecognizer)
         
@@ -115,7 +131,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         super.viewWillDisappear(animated)
         sceneView.session.pause()
     }
-
+    
     // MARK: - Methods
     
     private func startGame() {
@@ -136,6 +152,9 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     // MARK: - Planes
     
     func renderer(_ renderer: SCNSceneRenderer, didAdd node: SCNNode, for anchor: ARAnchor) {
+        if planes.count > 0 {
+            return
+        }
         guard let planeAnchor = anchor as? ARPlaneAnchor else {
             return
         }
@@ -154,7 +173,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         let plane = planes.filter { $0.anchor.identifier == anchor.identifier }.first
         plane?.update(withAnchor: planeAnchor)
     }
-    
+
     // MARK: - Actions
     
     @objc func tap(recognizer: UITapGestureRecognizer) {
@@ -212,9 +231,9 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
             z = -0.1
         }
         
-//        mazeNode.position = SCNVector3(
+        //        mazeNode.position = SCNVector3(
     }
-
+    
     func addMaze(with result: ARHitTestResult) {
         guard let planeAnchor = result.anchor as? ARPlaneAnchor else {
             print("Not plane anchor")
@@ -238,7 +257,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         self.mazeNode = mazeNode
         
         ratNode = mazeNode.childNode(withName: "rat", recursively: true)
-
+        
         let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinch))
         sceneView.addGestureRecognizer(pinchGestureRecognizer)
         
@@ -273,6 +292,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         }
         
         if ratNode.position.z > 40 {
+            currentState = .win
             self.positionTimer?.invalidate()
         }
     }
