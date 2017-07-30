@@ -73,9 +73,9 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         super.viewDidLoad()
 
         sceneView.delegate = self
-//        sceneView.autoenablesDefaultLighting = false
-//        sceneView.automaticallyUpdatesLighting = false
-//        sceneView.pointOfView?.light = spotLight
+        sceneView.autoenablesDefaultLighting = false
+        sceneView.automaticallyUpdatesLighting = false
+        sceneView.pointOfView?.light = spotLight
         sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tap))
@@ -164,6 +164,32 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
                                         mazeNode.scale.z * scale)
     }
     
+    @objc func pan(recognizer: UIPanGestureRecognizer) {
+        guard let mazeNode = mazeNode else {
+            return
+        }
+        
+        let x: CGFloat
+        let z: CGFloat
+        
+        let velocity = recognizer.velocity(in: sceneView)
+        if velocity.x > 0 {
+            x = 0.1
+        }
+        else {
+            x = -0.1
+        }
+        
+        if velocity.y > 0 {
+            z = 0.1
+        }
+        else {
+            z = -0.1
+        }
+        
+//        mazeNode.position = SCNVector3(
+    }
+    
     @IBAction func moveButtonAction(_ sender: Any) {
         guard let frame = sceneView.session.currentFrame else {
             return
@@ -192,7 +218,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         unwrappedPlane.planeNode?.isHidden = true
         let mazeScene = SCNScene(named: "art.scnassets/Maze.scn")!
         let mazeNode = mazeScene.rootNode.clone()
-        mazeNode.scale = SCNVector3Make(0.05, 0.05, 0.05)
+        mazeNode.scale = SCNVector3Make(0.1, 0.1, 0.1)
         mazeNode.position = SCNVector3Make(result.worldTransform.columns.3.x,
                                            result.worldTransform.columns.3.y,
                                            result.worldTransform.columns.3.z)
@@ -201,6 +227,9 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         
         let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinch))
         sceneView.addGestureRecognizer(pinchGestureRecognizer)
+        
+        let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(pan))
+        sceneView.addGestureRecognizer(panGestureRecognizer)
         
         startGame()
     }
