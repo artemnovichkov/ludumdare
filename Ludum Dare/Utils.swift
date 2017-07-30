@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SceneKit
 
 extension Float {
 
@@ -16,5 +17,22 @@ extension Float {
 
     var toRadians: Float {
         return self * Float.pi / 180 
+    }
+}
+
+extension SCNVector3 {
+    
+    /**
+     Calculates vector length based on Pythagoras theorem
+     */
+    var length: Float {
+        return sqrtf(x*x + z*z)
+    }
+    
+    /**
+     Calculates dot product to vector
+     */
+    func dot(toVector: SCNVector3) -> Float {
+        return x * toVector.x + z * toVector.z
     }
 }

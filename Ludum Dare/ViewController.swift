@@ -62,6 +62,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     
     var planes = [Plane]()
     var mazeNode: SCNNode?
+    var ratNode: SCNNode?
     var gameTimer: Timer?
     var positionTimer: Timer?
 
@@ -74,9 +75,9 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         super.viewDidLoad()
 
         sceneView.delegate = self
-        sceneView.autoenablesDefaultLighting = false
-        sceneView.automaticallyUpdatesLighting = false
-        sceneView.pointOfView?.light = spotLight
+//        sceneView.autoenablesDefaultLighting = false
+//        sceneView.automaticallyUpdatesLighting = false
+//        sceneView.pointOfView?.light = spotLight
         sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tap))
@@ -211,6 +212,8 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.scene.rootNode.addChildNode(mazeNode)
         self.mazeNode = mazeNode
         
+        ratNode = mazeNode.childNode(withName: "rat", recursively: true)
+
         let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinch))
         sceneView.addGestureRecognizer(pinchGestureRecognizer)
         
@@ -220,20 +223,26 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         startGame()
     }
     
-    func flatForceVector(for first: SCNVector3, second: SCNVector3, forceVolume: Float = 0.15) -> SCNVector3 {
+    func flatForceVector(for first: SCNVector3, second: SCNVector3, forceVolume: Float = 0.2) -> SCNVector3 {
         let xForce = ((abs(first.x) - abs(second.x))) > 0 ? -forceVolume : forceVolume
         let zForce = ((abs(first.z) - abs(second.z))) > 0 ? -forceVolume : forceVolume
         return SCNVector3Make(xForce, 0, zForce)
     }
     
-    @IBAction func touchDown(_ sender: Any) {
-        guard let ratNode = mazeNode?.childNode(withName: "rat", recursively: true) else {
-            return
-        }
-        let timer = Timer(timeInterval: 0.01, repeats: true) { _ in
-            ratNode.position = SCNVector3Make(ratNode.position.x,
-                                              ratNode.position.y,
-                                              ratNode.position.z + 0.05)
+    @IBAction func touchDown(_ sender: UIButton) {
+        let timer = Timer(timeInterval: 0.1, repeats: true) { [unowned self] _ in
+            guard let ratNode = self.ratNode else {
+                return
+            }
+            if sender.tag == 0 {
+                ratNode.position.x -= 0.2
+            }
+            if sender.tag == 1 {
+                ratNode.position.z += 0.2
+            }
+            if sender.tag == 2 {
+                ratNode.position.x += 0.2
+            }
         }
         RunLoop.current.add(timer, forMode: .commonModes)
         positionTimer = timer
