@@ -113,6 +113,7 @@
                         <viewLayoutGuide key="safeArea" id="Dbh-I0-6jv"/>
                     </view>
                     <connections>
+                        <outlet property="downButton" destination="Ewl-hJ-cV5" id="hwm-1S-fY3"/>
                         <outlet property="leftButton" destination="jyB-ae-edS" id="Wuq-Bq-8dj"/>
                         <outlet property="maxProgressConstraint" destination="8c8-JW-iVL" id="ium-r1-tMX"/>
                         <outlet property="progressView" destination="6CC-dN-axU" id="hFM-OA-p8F"/>
