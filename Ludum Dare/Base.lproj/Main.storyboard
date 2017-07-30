@@ -40,15 +40,29 @@
                                     <constraint firstAttribute="bottom" secondItem="6CC-dN-axU" secondAttribute="bottom" id="WGk-Fo-hGd"/>
                                 </constraints>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="V1z-cI-681">
+                                <rect key="frame" x="16" y="605" width="50" height="50"/>
+                                <color key="backgroundColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="GVx-pK-8R2"/>
+                                    <constraint firstAttribute="height" constant="50" id="xVu-j5-Xfx"/>
+                                </constraints>
+                                <state key="normal" title="Move"/>
+                                <connections>
+                                    <action selector="moveButtonAction:" destination="BV1-FR-VrT" eventType="touchUpInside" id="Nsb-gG-zGc"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
+                            <constraint firstItem="Dbh-I0-6jv" firstAttribute="bottom" secondItem="V1z-cI-681" secondAttribute="bottom" constant="12" id="1oq-ee-RB7"/>
                             <constraint firstItem="Dbh-I0-6jv" firstAttribute="bottom" secondItem="ALo-rS-Ael" secondAttribute="bottom" id="BmU-N6-Gqd"/>
                             <constraint firstItem="Dbh-I0-6jv" firstAttribute="trailing" secondItem="m36-iR-vb7" secondAttribute="trailing" constant="10" id="IrA-R0-6pm"/>
                             <constraint firstItem="ALo-rS-Ael" firstAttribute="top" secondItem="Dbh-I0-6jv" secondAttribute="top" id="guj-Da-KLu"/>
                             <constraint firstItem="Dbh-I0-6jv" firstAttribute="trailing" secondItem="ALo-rS-Ael" secondAttribute="trailing" id="lQS-gb-5Xm"/>
                             <constraint firstItem="m36-iR-vb7" firstAttribute="top" secondItem="Dbh-I0-6jv" secondAttribute="top" constant="10" id="oTO-MO-4gE"/>
                             <constraint firstItem="ALo-rS-Ael" firstAttribute="leading" secondItem="Dbh-I0-6jv" secondAttribute="leading" id="qUz-5T-xfD"/>
+                            <constraint firstItem="V1z-cI-681" firstAttribute="leading" secondItem="Dbh-I0-6jv" secondAttribute="leading" constant="16" id="tTP-HA-e0G"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Dbh-I0-6jv"/>
                     </view>

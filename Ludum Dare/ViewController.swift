@@ -73,9 +73,9 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         super.viewDidLoad()
 
         sceneView.delegate = self
-        sceneView.autoenablesDefaultLighting = false
-        sceneView.automaticallyUpdatesLighting = false
-        sceneView.pointOfView?.light = spotLight
+//        sceneView.autoenablesDefaultLighting = false
+//        sceneView.automaticallyUpdatesLighting = false
+//        sceneView.pointOfView?.light = spotLight
         sceneView.debugOptions = [ARSCNDebugOptions.showFeaturePoints]
 
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tap))
@@ -162,6 +162,22 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         mazeNode.scale = SCNVector3Make(mazeNode.scale.x * scale,
                                         mazeNode.scale.y * scale,
                                         mazeNode.scale.z * scale)
+    }
+    
+    @IBAction func moveButtonAction(_ sender: Any) {
+        guard let frame = sceneView.session.currentFrame else {
+            return
+        }
+        guard let ratNode = mazeNode?.childNode(withName: "rat", recursively: true) else {
+            return
+        }
+        let cameraPosition = SCNVector3Make(frame.camera.transform.columns.3.x,
+                                            frame.camera.transform.columns.3.y,
+                                            frame.camera.transform.columns.3.z)
+        let ratPosition = ratNode.worldPosition
+        let force = flatForceVector(for: ratPosition, second: cameraPosition)
+//        let force = SCNVector3Make(0.5, 0.5, 0.5)
+        ratNode.physicsBody?.applyForce(force, asImpulse: true)
     }
     
     func addMaze(with result: ARHitTestResult) {
