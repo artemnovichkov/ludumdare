@@ -238,6 +238,10 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
             ratNode.position = SCNVector3Make(ratNode.position.x,
                                               ratNode.position.y,
                                               ratNode.position.z + 0.05)
+            if ratNode.position.z > 40 {
+                print("WIN!")
+                self.positionTimer?.invalidate()
+            }
         }
         RunLoop.current.add(timer, forMode: .commonModes)
         positionTimer = timer
