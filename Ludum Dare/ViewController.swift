@@ -104,6 +104,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     // MARK: - Methods
     
     private func startGame() {
+        sceneView.debugOptions = []
         let timer = Timer(timeInterval: 0.5, repeats: true) { [unowned self] _ in
             self.currentEnergy -= self.lastForce
         }
