@@ -336,19 +336,19 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         
         if sender.tag == 0 {
             currentPaw = .left
-//            ratNode.position.x += 0.4
+            ratNode.eulerAngles = SCNVector3Make(0, Float(Double.pi / 2), 0);
         }
         if sender.tag == 1 {
             currentPaw = .up
-//            ratNode.position.z += 0.4
+            ratNode.eulerAngles = SCNVector3Make(0, 0, 0);
         }
         if sender.tag == 2 {
             currentPaw = .right
-//            ratNode.position.x -= 0.4
+            ratNode.eulerAngles = SCNVector3Make(0, Float(Double.pi * 1.5), 0);
         }
         if sender.tag == 3 {
             currentPaw = .down
-//            ratNode.position.z -= 0.4
+            ratNode.eulerAngles = SCNVector3Make(0, Float(Double.pi), 0);
         }
         
         if ratNode.position.z > 40 {
