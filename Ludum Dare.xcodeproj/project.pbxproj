@@ -14,7 +14,6 @@
 		06BD6F5C1F2B74FD0003A793 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 06BD6F5A1F2B74FD0003A793 /* Main.storyboard */; };
 		06BD6F5E1F2B74FD0003A793 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 06BD6F5D1F2B74FD0003A793 /* Assets.xcassets */; };
 		06BD6F611F2B74FD0003A793 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 06BD6F5F1F2B74FD0003A793 /* LaunchScreen.storyboard */; };
-		8415C8FB1F2D878A004261DE /* ViewController-light.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8415C8FA1F2D878A004261DE /* ViewController-light.swift */; };
 		84C429BC1F2CFFD500499F54 /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84C429BB1F2CFFD500499F54 /* Utils.swift */; };
 /* End PBXBuildFile section */
 
@@ -28,7 +27,6 @@
 		06BD6F5D1F2B74FD0003A793 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		06BD6F601F2B74FD0003A793 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		06BD6F621F2B74FD0003A793 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		8415C8FA1F2D878A004261DE /* ViewController-light.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ViewController-light.swift"; sourceTree = "<group>"; };
 		84C429BB1F2CFFD500499F54 /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -66,7 +64,6 @@
 				06BD6F541F2B74FD0003A793 /* AppDelegate.swift */,
 				06BD6F561F2B74FD0003A793 /* art.scnassets */,
 				06BD6F581F2B74FD0003A793 /* ViewController.swift */,
-				8415C8FA1F2D878A004261DE /* ViewController-light.swift */,
 				06BD6F5A1F2B74FD0003A793 /* Main.storyboard */,
 				06BD6F5D1F2B74FD0003A793 /* Assets.xcassets */,
 				06BD6F5F1F2B74FD0003A793 /* LaunchScreen.storyboard */,
@@ -152,7 +149,6 @@
 				06BD6F591F2B74FD0003A793 /* ViewController.swift in Sources */,
 				062FDA971F2C97F800C8AF59 /* Plane.swift in Sources */,
 				06BD6F551F2B74FD0003A793 /* AppDelegate.swift in Sources */,
-				8415C8FB1F2D878A004261DE /* ViewController-light.swift in Sources */,
 				84C429BC1F2CFFD500499F54 /* Utils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
