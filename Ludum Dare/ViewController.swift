@@ -28,6 +28,11 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet weak var widthProgressConstraint: NSLayoutConstraint!
     @IBOutlet weak var maxProgressConstraint: NSLayoutConstraint!
     
+    @IBOutlet weak var upButton: UIButton!
+    @IBOutlet weak var downButton: UIButton!
+    @IBOutlet weak var leftButton: UIButton!
+    @IBOutlet weak var rightButton: UIButton!
+    
     fileprivate lazy var spotLight: SCNLight = {
         let spotLight = SCNLight()
         spotLight.type = .spot
@@ -85,6 +90,11 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.addGestureRecognizer(tapGestureRecognizer)
         
         progressView.isHidden = true
+        
+        upButton.isHidden = true
+        leftButton.isHidden = true
+        rightButton.isHidden = true
+        downButton.isHidden = true
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -106,6 +116,10 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     
     private func startGame() {
         sceneView.debugOptions = []
+        upButton.isHidden = false
+        leftButton.isHidden = false
+        rightButton.isHidden = false
+        downButton.isHidden = false
         let timer = Timer(timeInterval: 0.5, repeats: true) { [unowned self] _ in
             self.currentEnergy -= self.lastForce
         }
@@ -255,8 +269,8 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
             self.positionTimer?.invalidate()
         }
         
-        RunLoop.current.add(timer, forMode: .commonModes)
-        positionTimer = timer
+//        RunLoop.current.add(timer, forMode: .commonModes)
+//        positionTimer = timer
     }
     
     @IBAction func moveButtonAction(_ sender: Any) {

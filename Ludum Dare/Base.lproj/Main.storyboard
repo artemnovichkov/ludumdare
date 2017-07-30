@@ -98,9 +98,12 @@
                         <viewLayoutGuide key="safeArea" id="Dbh-I0-6jv"/>
                     </view>
                     <connections>
+                        <outlet property="leftButton" destination="jyB-ae-edS" id="Wuq-Bq-8dj"/>
                         <outlet property="maxProgressConstraint" destination="8c8-JW-iVL" id="ium-r1-tMX"/>
                         <outlet property="progressView" destination="6CC-dN-axU" id="hFM-OA-p8F"/>
+                        <outlet property="rightButton" destination="M0O-23-4h0" id="Thm-8N-5QM"/>
                         <outlet property="sceneView" destination="ALo-rS-Ael" id="bee-Wd-mIi"/>
+                        <outlet property="upButton" destination="YPp-zA-Y1o" id="JrN-tG-PiD"/>
                         <outlet property="widthProgressConstraint" destination="0CC-BZ-MNu" id="aiQ-h6-EIe"/>
                     </connections>
                 </viewController>
@@ -112,6 +115,6 @@
     <resources>
         <image name="paw-left" width="295" height="295"/>
         <image name="paw-right" width="295" height="295"/>
-        <image name="paw-up" width="295" height="295"/>
+        <image name="paw-up" width="50" height="50"/>
     </resources>
 </document>
