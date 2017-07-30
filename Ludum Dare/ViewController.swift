@@ -43,6 +43,16 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         sceneView.addGestureRecognizer(tapGestureRecognizer)
     }
     
+    @objc func pinch(recognizer: UIPinchGestureRecognizer) {
+        guard let mazeNode = mazeNode else {
+            return
+        }
+        let scale = Float(recognizer.scale)
+        mazeNode.scale = SCNVector3Make(mazeNode.scale.x * scale,
+                                        mazeNode.scale.y * scale,
+                                        mazeNode.scale.z * scale)
+    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
@@ -141,6 +151,8 @@ class ViewController: UIViewController, ARSCNViewDelegate {
                                                      result.worldTransform.columns.3.z)
         sceneView.scene.rootNode.addChildNode(mazeNode)
         self.mazeNode = mazeNode
+        let pinchGestureRecognizer = UIPinchGestureRecognizer(target: self, action: #selector(pinch))
+        sceneView.addGestureRecognizer(pinchGestureRecognizer)
     }
     
     func flatForceVector(for first: SCNVector3, second: SCNVector3, forceVolume: Float = 0.15) -> SCNVector3 {
