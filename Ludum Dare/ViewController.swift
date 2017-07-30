@@ -33,6 +33,10 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     @IBOutlet weak var leftButton: UIButton!
     @IBOutlet weak var rightButton: UIButton!
     
+    override var prefersStatusBarHidden: Bool {
+        return true
+    }
+    
     fileprivate lazy var spotLight: SCNLight = {
         let spotLight = SCNLight()
         spotLight.type = .spot
