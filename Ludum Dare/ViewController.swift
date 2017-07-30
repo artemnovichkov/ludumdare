@@ -19,8 +19,18 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         case win
     }
     
+    enum Paw {
+        case left
+        case up
+        case right
+        case down
+        case none
+    }
+    
+    var currentPaw: Paw = .none
+    
     fileprivate enum Battery {
-        static let fullEnergy: CGFloat = 500
+        static let fullEnergy: CGFloat = 400
     }
     
     @IBOutlet var sceneView: ARSCNView!
@@ -94,6 +104,9 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     deinit {
         gameTimer?.invalidate()
         gameTimer = nil
+        
+        positionTimer?.invalidate()
+        positionTimer = nil
     }
     
     override func viewDidLoad() {
@@ -153,7 +166,40 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         let timer = Timer(timeInterval: 0.5, repeats: true) { [unowned self] _ in
             self.currentEnergy -= self.lastForce
         }
+        
+        let positionTimer = Timer(timeInterval: 0.1, repeats: true) { [unowned self] _ in
+            if self.currentPaw == .none {
+                return
+            }
+            
+            guard let ratNode = self.ratNode else {
+                return
+            }
+            
+            if self.currentPaw == .left {
+                ratNode.position.x += 0.2
+            }
+            if self.currentPaw == .up {
+                ratNode.position.z += 0.2
+            }
+            if self.currentPaw == .right {
+                ratNode.position.x -= 0.2
+            }
+            if self.currentPaw == .down {
+                ratNode.position.z -= 0.2
+            }
+            
+            if ratNode.position.z > 40 {
+                self.currentState = .win
+                self.positionTimer?.invalidate()
+            }
+        }
+
         RunLoop.current.add(timer, forMode: .commonModes)
+        RunLoop.current.add(positionTimer, forMode: .commonModes)
+        
+        
+        self.positionTimer = positionTimer
         gameTimer = timer
         currentState = .playing
         progressView.isHidden = false
@@ -289,16 +335,20 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
         }
         
         if sender.tag == 0 {
-            ratNode.position.x += 0.4
+            currentPaw = .left
+//            ratNode.position.x += 0.4
         }
         if sender.tag == 1 {
-            ratNode.position.z += 0.4
+            currentPaw = .up
+//            ratNode.position.z += 0.4
         }
         if sender.tag == 2 {
-            ratNode.position.x -= 0.4
+            currentPaw = .right
+//            ratNode.position.x -= 0.4
         }
         if sender.tag == 3 {
-            ratNode.position.z -= 0.4
+            currentPaw = .down
+//            ratNode.position.z -= 0.4
         }
         
         if ratNode.position.z > 40 {
@@ -308,8 +358,7 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     }
     
     @IBAction func moveButtonAction(_ sender: Any) {
-        positionTimer?.invalidate()
-        positionTimer = nil
+        currentPaw = .none
     }
 }
 

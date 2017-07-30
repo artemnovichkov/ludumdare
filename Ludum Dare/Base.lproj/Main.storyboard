@@ -111,7 +111,7 @@
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" image="paw-right"/>
                                 <connections>
-                                    <action selector="moveButtonAction:" destination="BV1-FR-VrT" eventType="touchDragInside" id="fFy-4I-MzJ"/>
+                                    <action selector="moveButtonAction:" destination="BV1-FR-VrT" eventType="touchUpInside" id="MGR-O3-A1C"/>
                                     <action selector="touchDown:" destination="BV1-FR-VrT" eventType="touchDown" id="hMZ-Ud-F9V"/>
                                 </connections>
                             </button>
@@ -124,7 +124,7 @@
                                 <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <state key="normal" image="paw-down"/>
                                 <connections>
-                                    <action selector="moveButtonAction:" destination="BV1-FR-VrT" eventType="touchDragInside" id="HB5-Te-vGF"/>
+                                    <action selector="moveButtonAction:" destination="BV1-FR-VrT" eventType="touchUpInside" id="msX-vv-bZo"/>
                                     <action selector="touchDown:" destination="BV1-FR-VrT" eventType="touchDown" id="AxZ-l3-Gqo"/>
                                 </connections>
                             </button>
