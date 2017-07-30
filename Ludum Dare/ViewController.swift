@@ -135,6 +135,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
         unwrappedPlane.planeNode?.isHidden = true
         let mazeScene = SCNScene(named: "art.scnassets/Maze.scn")!
         let mazeNode = mazeScene.rootNode.clone()
+        mazeNode.scale = SCNVector3Make(0.05, 0.05, 0.05)
         mazeNode.position = SCNVector3Make(result.worldTransform.columns.3.x,
                                                      result.worldTransform.columns.3.y,
                                                      result.worldTransform.columns.3.z)
