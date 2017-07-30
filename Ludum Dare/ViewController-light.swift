@@ -10,7 +10,7 @@ import UIKit
 import SceneKit
 import ARKit
 
-class ViewController: UIViewController, ARSCNViewDelegate {
+class ViewControllerLight: UIViewController, ARSCNViewDelegate {
 
     @IBOutlet var sceneView: ARSCNView!
     
@@ -83,7 +83,7 @@ class ViewController: UIViewController, ARSCNViewDelegate {
 
 // MARK: - ARSessionDelegate
 
-extension ViewController: ARSessionDelegate {
+extension ViewControllerLight: ARSessionDelegate {
     func session(_ session: ARSession, didUpdate frame: ARFrame) {
         let transform = frame.camera.transform
         let eulerAngles = frame.camera.eulerAngles
