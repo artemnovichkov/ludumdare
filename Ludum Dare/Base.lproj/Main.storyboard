@@ -49,6 +49,7 @@
                                 <state key="normal" image="paw"/>
                                 <connections>
                                     <action selector="moveButtonAction:" destination="BV1-FR-VrT" eventType="touchUpInside" id="Nsb-gG-zGc"/>
+                                    <action selector="touchDown:" destination="BV1-FR-VrT" eventType="touchDown" id="kxq-q4-uZO"/>
                                 </connections>
                             </button>
                         </subviews>
