@@ -136,10 +136,20 @@ final class ViewController: UIViewController, ARSCNViewDelegate {
     
     private func startGame() {
         sceneView.debugOptions = []
+        
         upButton.isHidden = false
         leftButton.isHidden = false
         rightButton.isHidden = false
         downButton.isHidden = false
+        
+        let source = SCNAudioSource(fileNamed: "art.scnassets/sounds/music.m4a")!
+        source.volume = 0.25
+        source.loops = true
+        source.shouldStream = true
+        source.isPositional = false
+        let player = SCNAudioPlayer(source: source)
+        sceneView.scene.rootNode.addAudioPlayer(player)
+        
         let timer = Timer(timeInterval: 0.5, repeats: true) { [unowned self] _ in
             self.currentEnergy -= self.lastForce
         }
